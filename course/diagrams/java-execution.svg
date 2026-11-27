@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 218" width="450" height="218" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#17604f"/>
+    </marker>
+  </defs>
+  <g fill="#eef3ed" stroke="#adc2b5">
+    <rect x="1" y="1" width="162" height="64" rx="8"/>
+    <rect x="287" y="1" width="162" height="64" rx="8"/>
+    <rect x="287" y="153" width="162" height="64" rx="8"/>
+    <rect x="1" y="153" width="162" height="64" rx="8"/>
+  </g>
+  <g fill="none" stroke="#17604f" stroke-width="2" marker-end="url(#arrow)">
+    <path d="M171 33H279"/>
+    <path d="M368 73V145"/>
+    <path d="M279 185H171"/>
+  </g>
+  <g fill="#1b2a32" font-size="18" text-anchor="middle">
+    <text x="82" y="27" font-weight="700">Java source</text>
+    <text x="82" y="49">.java</text>
+    <text x="368" y="27" font-weight="700">Bytecode</text>
+    <text x="368" y="49">.class</text>
+    <text x="368" y="179" font-weight="700">Executable JAR</text>
+    <text x="368" y="201">classes + manifest</text>
+    <text x="82" y="179" font-weight="700">JVM</text>
+    <text x="82" y="201">executes main</text>
+  </g>
+  <g fill="#17604f" font-size="16" text-anchor="middle">
+    <text x="225" y="23">javac</text>
+    <text x="354" y="115" text-anchor="end">Maven packages</text>
+    <text x="225" y="175">java -jar</text>
+  </g>
+</svg>

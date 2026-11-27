@@ -1,0 +1,15 @@
+# Maven build output and loose Java bytecode
+target/
+*.class
+
+# Local Java IDE files
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# Operating system metadata
+Thumbs.db
+Desktop.ini
+.DS_Store

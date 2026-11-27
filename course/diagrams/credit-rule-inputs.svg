@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 220" width="450" height="220" font-family="system-ui, sans-serif">
+  <g fill="#eef3ed" stroke="#adc2b5">
+    <rect x="1" y="36" width="213" height="46" rx="7"/>
+    <rect x="236" y="36" width="213" height="46" rx="7"/>
+    <rect x="1" y="105" width="213" height="46" rx="7"/>
+    <rect x="236" y="105" width="213" height="46" rx="7"/>
+    <rect x="1" y="174" width="213" height="45" rx="7"/>
+    <rect x="236" y="174" width="213" height="45" rx="7"/>
+  </g>
+  <g fill="none" stroke="#17604f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M107 86v15m-4-5 4 5 4-5M343 86v15m-4-5 4 5 4-5"/>
+    <path d="M107 155v15m-4-5 4 5 4-5M343 155v15m-4-5 4 5 4-5"/>
+  </g>
+  <g fill="#1b2a32" font-size="17" text-anchor="middle">
+    <text x="107" y="21" font-size="20" font-weight="700">COBOL paragraph</text>
+    <text x="343" y="21" font-size="20" font-weight="700">Java method</text>
+    <text x="107" y="55">Reads invoice and cents</text>
+    <text x="107" y="74">from working storage</text>
+    <text x="343" y="55">Receives invoice and</text>
+    <text x="343" y="74">cents as parameters</text>
+    <text x="107" y="134" font-weight="700">VALIDATE-CREDIT</text>
+    <text x="343" y="134" font-weight="700">validate(...)</text>
+    <text x="107" y="193">Writes status to</text>
+    <text x="107" y="212">working storage</text>
+    <text x="343" y="193">Returns status</text>
+    <text x="343" y="212">to the caller</text>
+  </g>
+</svg>

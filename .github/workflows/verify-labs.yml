@@ -1,0 +1,96 @@
+name: Verify labs
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build and test each runnable lab
+        shell: pwsh
+        run: |
+          $wrapperName = if ($IsWindows) { 'mvnw.cmd' } else { 'mvnw' }
+          $wrapper = Join-Path $env:GITHUB_WORKSPACE "modules/00-orientation/$wrapperName"
+          $labs = @(
+            Get-ChildItem -LiteralPath modules -Directory |
+              Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'pom.xml') -PathType Leaf } |
+              Sort-Object Name
+          )
+          if ($labs.Count -eq 0) {
+            throw 'No runnable Maven labs were found.'
+          }
+
+          foreach ($lab in $labs) {
+            Write-Host "Verifying $($lab.Name)"
+            Push-Location -LiteralPath $lab.FullName
+            try {
+              & $wrapper --batch-mode --no-transfer-progress clean verify
+              if ($LASTEXITCODE -ne 0) {
+                throw "Maven verification failed for $($lab.Name) with exit code $LASTEXITCODE."
+              }
+            } finally {
+              Pop-Location
+            }
+          }
+
+      - name: Smoke-test the packaged JDBC lab
+        shell: bash
+        working-directory: modules/04-jdbc-persistence
+        run: |
+          jar=target/module-4-jdbc-persistence.jar
+          schema=$(java -jar "$jar" init)
+          submitted=$(java -jar "$jar" submit REQ-CI INV-CI 12.50 USER-CI-001)
+          found=$(java -jar "$jar" find REQ-CI)
+          printf '%s\n' "$schema" "$submitted" "$found"
+          # Bash leaves a trailing carriage return when it captures Windows Java output.
+          test "${schema%$'\r'}" = 'SCHEMA_READY'
+          test "${submitted%$'\r'}" = 'SUBMITTED REQ-CI'
+          test "${found%$'\r'}" = 'FOUND REQ-CI INV-CI 12.50'
+
+  course:
+    name: Verify HTML course
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+          package-manager-cache: false
+
+      - name: Build and check the course site
+        working-directory: course
+        run: |
+          npm ci
+          npm run build
+          npm run check
+
+      - name: Package the verified course site
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: perform-to-platform-course
+          path: course/site/
+          if-no-files-found: error
